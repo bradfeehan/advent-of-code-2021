@@ -96,3 +96,37 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 end
+
+ROOT = File.realpath(File.join(__dir__, '..'))
+SPEC_ROOT = File.join(ROOT, 'spec')
+
+class Day
+  attr_reader :number
+
+  def initialize(number)
+    @number = number
+  end
+
+  def script(name)
+    relative_path(ROOT, name, 'rb')
+  end
+
+  def fixture(name = 'example')
+    relative_path(SPEC_ROOT, name, 'txt')
+  end
+
+  def input(name = 'input')
+    relative_path(ROOT, name, 'txt')
+  end
+
+  private
+
+  def number_path
+    format('%02d', number)
+  end
+
+  def relative_path(root, name, extension)
+    name = "#{name.chomp(".#{extension}")}.#{extension}"
+    File.join(root, number_path, name)
+  end
+end
